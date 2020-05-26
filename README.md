@@ -1,2 +1,2 @@
-# pac-man-flow-work
+# Pac-Man Flow
 A Pac-Man game in terminal!
