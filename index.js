@@ -7,18 +7,24 @@ const fillMap = mapGen.fillMap;
 const addCharacter = mapGen.addCharacter;
 const printMap = mapGen.printMap;
 const move = moveFunc.move;
+const addMonster = mapGen.addMonster;
+const monsterContext = mapGen.monsterContext;
+// Game code
+const speed = 200;
 const map = generateMap(50, 50);
+const mapBackground = generateMap(50, 50);
 let direction = null;
-fillMap(map);
-addCharacter(map);
+fillMap(map, mapBackground);
+addCharacter(map, mapBackground);
+addMonster(map, mapBackground, 7, 8);
+addMonster(map, mapBackground, 9, 8);
 printMap(map);
-console.log(context.x);
 const stdin = process.stdin;
 stdin.setRawMode(true);
 stdin.resume();
 stdin.setEncoding('utf8');
 const start = () => {
-  move(direction, map);
+  move(direction, map, mapBackground);
 };
 stdin.on('data', (key) => {
   if (key === 'q') {
@@ -34,4 +40,5 @@ stdin.on('data', (key) => {
     direction = key;
   }
 });
-setInterval(start, 100);
+
+setInterval(start, speed);

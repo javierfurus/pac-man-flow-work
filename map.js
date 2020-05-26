@@ -1,36 +1,45 @@
 const table = require('table');
-const colors = require('colors');
 const chalk = require('chalk');
 const getBorderCharacters = table.getBorderCharacters;
+const emptyObject = { sprite: '  ', passeable: true };
 const character = chalk.bgYellow.yellowBright('OO');
+const monster = { sprite: chalk.bgWhiteBright('00'), passeable: false, dangerous: true };
 const context = { x: 0, y: 0 };
+const monsterContext = { x: 0, y: 0 };
 const generateMap = (width, height) => {
-  const mapArr = new Array(height);
+  const mapToBe = new Array(height);
   for (let i = 0; i < height; i++) {
-    mapArr[i] = new Array(width);
+    mapToBe[i] = new Array(width);
   }
-  return mapArr;
+  return mapToBe;
 };
-const fillMap = (mapArr) => {
-  for (let i = 0; i < mapArr.length; i++) {
-    for (let j = 0; j < mapArr[i].length; j++) {
-      mapArr[i][j] = '  ';
+const fillMap = (mapVisible, mapLogic) => {
+  for (let i = 0; i < mapVisible.length; i++) {
+    for (let j = 0; j < mapVisible[i].length; j++) {
+      mapVisible[i][j] = emptyObject.sprite;
+      mapLogic[i][j] = emptyObject;
     }
   }
 };
-const addCharacter = (mapArr) => {
+const addCharacter = (mapVisible, mapLogic) => {
   let middleHeight;
   let middleWidth;
-  for (let i = 0; i < mapArr.length; i++) {
+  for (let i = 0; i < mapVisible.length; i++) {
     middleHeight = Math.floor(i / 2);
-    for (let j = 0; j < mapArr[0].length; j++) {
+    for (let j = 0; j < mapVisible[0].length; j++) {
       middleWidth = Math.floor(j / 2);
     }
   }
-  mapArr[middleHeight][middleWidth] = character;
+  mapVisible[middleHeight][middleWidth] = character;
+  mapLogic[middleHeight][middleWidth] = character;
   context.x = middleHeight;
   context.y = middleWidth;
-  console.log(context);
+};
+const addMonster = (mapVisible, mapLogic, x, y) => {
+  mapVisible[x][y] = monster.sprite;
+  mapLogic[x][y] = monster;
+  monsterContext.x = x;
+  monsterContext.y = y;
 };
 const printMap = (mapArr) => {
   const config = {
@@ -50,6 +59,9 @@ module.exports = {
   context,
   fillMap,
   addCharacter,
-  printMap
+  printMap,
+  monsterContext,
+  addMonster,
+  emptyObject
 }
 ;
