@@ -1,0 +1,25 @@
+{
+  "name": "pac-man-flow-work",
+  "version": "0.0.5",
+  "description": "A Pac-Man game in terminal",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javierfurus/pac-man-flow-work.git"
+  },
+  "keywords": [
+    "pac-man",
+    "pacman",
+    "terminal",
+    "game"
+  ],
+  "author": "Javier Furus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/javierfurus/pac-man-flow-work/issues"
+  },
+  "homepage": "https://github.com/javierfurus/pac-man-flow-work#readme"
+}
