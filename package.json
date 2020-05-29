@@ -21,5 +21,10 @@
   "bugs": {
     "url": "https://github.com/javierfurus/pac-man-flow-work/issues"
   },
-  "homepage": "https://github.com/javierfurus/pac-man-flow-work#readme"
+  "homepage": "https://github.com/javierfurus/pac-man-flow-work#readme",
+  "dependencies": {
+    "as-table": "^1.0.55",
+    "cli-table3": "^0.6.0",
+    "colors": "^1.4.0"
+  }
 }

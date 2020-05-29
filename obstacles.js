@@ -1,6 +1,6 @@
-const chalk = require('chalk');
-const wallHorizontal = { sprite: chalk.bgBlue.blue('══'), passeable: false, dangerous: false, collectible: false };
-const wallVertical = { sprite: chalk.bgBlue.blue('║║'), passeable: false, dangerous: false, collectible: false };
+const colors = require('colors');
+const wallHorizontal = { sprite: colors.bgBlue.blue('══'), passeable: false, dangerous: false, collectible: false };
+const wallVertical = { sprite: colors.bgBlue.blue('║║'), passeable: false, dangerous: false, collectible: false };
 
 const addObject = (mapVisible, placeX, placeY, obj) => { // num is the number of snowflakes
   let obHeight = null;
