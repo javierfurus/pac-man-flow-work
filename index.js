@@ -1,5 +1,6 @@
 const mapGen = require('./map');
 const moveFunc = require('./movement');
+const scoreMenu = require('./score');
 // map functions
 const generateMap = mapGen.generateMap;
 const context = mapGen.context;
@@ -8,17 +9,20 @@ const addCharacter = mapGen.addCharacter;
 const printMap = mapGen.printMap;
 const addMonster = mapGen.addMonster;
 const monCon = mapGen.monCon;
+const orbCount = mapGen.orbCount;
 // move functions
 const monsterMove = moveFunc.monsterMovement;
 const move = moveFunc.move;
 const monsterFollow = moveFunc.monsterFollow;
+// score functions
+const putScore = scoreMenu.putScore;
 // Game code
 const speed = 200;
+const monsterSpeed = 100;
 const map = generateMap(31, 30);
 const mapBackground = generateMap(31, 30);
 let direction = null;
 fillMap(map, mapBackground);
-
 addCharacter(map, mapBackground);
 addMonster(map, mapBackground, 3);
 printMap(map);
@@ -43,6 +47,7 @@ setInterval(() => {
 }, 2000);
 const detour = (chosenDir, n) => {
   const options = ['one', 'two', 'three', 'four'];
+  // Where should a monster go...
   if (chosenDir === 'right' && (mapBackground[monCon[options[n]].y + 1] === undefined ||
   mapBackground[monCon[options[n]].x][monCon[options[n]].y + 1].passeable === false)) { // When the wall is to the right
     const dir = 1;
@@ -82,13 +87,13 @@ const monsterStart = () => {
   const chosenDir1 = directions[dirPicker1];
   const chosenDir2 = directions[dirPicker2];
   const chosenDir3 = directions[dirPicker3];
-  // Where should a monster go...
-  detour(chosenDir0, 0);
+  // We change the direction of the monsters when they hit an obstacle.
+  detour(chosenDir0, 0); // We pick the monster's movement (choosenDir) and the corresponding number (0 for example)
   detour(chosenDir1, 1);
   detour(chosenDir2, 2);
   detour(chosenDir3, 3);
   monsterMove(chosenDir0, map, mapBackground, 0);
-  monsterMove(chosenDir1, map, mapBackground, 1); // let's move!
+  monsterMove(chosenDir1, map, mapBackground, 1);
   monsterMove(chosenDir2, map, mapBackground, 2);
   monsterMove(chosenDir3, map, mapBackground, 3);
 };
@@ -107,8 +112,8 @@ stdin.on('data', (key) => {
     direction = key;
   }
 });
-setInterval(() => { printMap(map); }, 73);
-setInterval(start, speed);
-setInterval(monsterStart, speed);
+setInterval(() => { putScore(orbCount(map)); printMap(map); }, 73);
+setInterval(start, speed); // the character's interval
+setInterval(monsterStart, monsterSpeed); // the monsters' interval
 
 // Follow!

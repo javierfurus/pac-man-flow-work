@@ -1,7 +1,9 @@
 const asTable = require('as-table');
 const colors = require('colors');
 const obstacles = require('./obstacles');
+const scoreMenu = require('./score');
 const putObstacles = obstacles.putObstacles;
+const pushScoreMenu = scoreMenu.pushScoreMenu;
 const emptyObject = { character: false, sprite: '  ', passeable: true, dangerous: false, collectible: false };
 const character = { character: true, sprite: colors.bgBrightYellow.brightYellow('  '), passeable: false, dangerous: false, collectible: false };
 const monster = {
@@ -36,6 +38,17 @@ const fillMap = (mapVisible, mapLogic) => {
   }
   putObstacles(mapVisible, mapLogic);
 };
+const orbCount = (mapVisible) => {
+  let orbCount = 0;
+  for (let i = 0; i < mapVisible.length; i++) {
+    for (let j = 0; j < mapVisible[i].length; j++) {
+      if (mapVisible[i][j] === orb.sprite) {
+        orbCount++;
+      }
+    }
+  }
+  return orbCount;
+};
 // Adding Pac-Man to the mapVisible
 const addCharacter = (mapVisible, mapLogic) => {
   const x = 20;
@@ -44,6 +57,14 @@ const addCharacter = (mapVisible, mapLogic) => {
   mapLogic[x][y] = character;
   context.x = x;
   context.y = y;
+};
+
+// Removing the character
+const removeCharacter = (mapVisible, mapLogic) => {
+  const x = context.x;
+  const y = context.y;
+  mapVisible[x][y] = emptyObject.sprite;
+  mapLogic[x][y] = emptyObject;
 };
 
 const addMonster = (mapVisible, mapLogic, n) => {
@@ -65,9 +86,11 @@ const addMonster = (mapVisible, mapLogic, n) => {
     n--;
   }
 };
+
 const printMap = (mapArr) => {
   console.clear();
-  console.log(asTable.configure({ delimiter: '' })(mapArr));
+  console.log(`${asTable.configure({ delimiter: '' })(mapArr)}`);
+  pushScoreMenu();
 };
 module.exports = {
   generateMap,
@@ -81,6 +104,8 @@ module.exports = {
   character,
   monster,
   orb,
-  amountOfMonsters
+  amountOfMonsters,
+  removeCharacter,
+  orbCount
 }
 ;
