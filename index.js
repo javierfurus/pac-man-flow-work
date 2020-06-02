@@ -3,7 +3,6 @@ const moveFunc = require('./movement');
 const scoreMenu = require('./score');
 // map functions
 const generateMap = mapGen.generateMap;
-const context = mapGen.context;
 const fillMap = mapGen.fillMap;
 const addCharacter = mapGen.addCharacter;
 const printMap = mapGen.printMap;
@@ -13,12 +12,11 @@ const orbCount = mapGen.orbCount;
 // move functions
 const monsterMove = moveFunc.monsterMovement;
 const move = moveFunc.move;
-const monsterFollow = moveFunc.monsterFollow;
 // score functions
 const putScore = scoreMenu.putScore;
 // Game code
 const speed = 200;
-const monsterSpeed = 100;
+const monsterSpeed = 190;
 const map = generateMap(31, 30);
 const mapBackground = generateMap(31, 30);
 let direction = null;
@@ -79,6 +77,37 @@ const detour = (chosenDir, n) => {
     if (n === 1) dirPicker1 = dir;
     if (n === 2) dirPicker2 = dir;
     if (n === 3) dirPicker3 = dir;
+  }
+  // Follow
+  for (let i = 0; i < 20; i++) {
+    if ((mapBackground[monCon[options[n]].y + i] && mapBackground[monCon[options[n]].x][monCon[options[n]].y + i].character)) { // When the wall is to the right
+      const dir = 3;
+      if (n === 0) dirPicker0 = dir;
+      if (n === 1) dirPicker1 = dir;
+      if (n === 2) dirPicker2 = dir;
+      if (n === 3) dirPicker3 = dir;
+    }
+    if ((mapBackground[monCon[options[n]].y - i] && mapBackground[monCon[options[n]].x][monCon[options[n]].y - i].character)) { // When the wall is to the left
+      const dir = 2;
+      if (n === 0) dirPicker0 = dir;
+      if (n === 1) dirPicker1 = dir;
+      if (n === 2) dirPicker2 = dir;
+      if (n === 3) dirPicker3 = dir;
+    }
+    if ((mapBackground[monCon[options[n]].x + i] && mapBackground[monCon[options[n]].x + i][monCon[options[n]].y].character)) { // When the wall is in on the bottom
+      const dir = 1;
+      if (n === 0) dirPicker0 = dir;
+      if (n === 1) dirPicker1 = dir;
+      if (n === 2) dirPicker2 = dir;
+      if (n === 3) dirPicker3 = dir;
+    }
+    if ((mapBackground[monCon[options[n]].x - i] && mapBackground[monCon[options[n]].x - i][monCon[options[n]].y].character)) { // when the wall is on top
+      const dir = 0;
+      if (n === 0) dirPicker0 = dir;
+      if (n === 1) dirPicker1 = dir;
+      if (n === 2) dirPicker2 = dir;
+      if (n === 3) dirPicker3 = dir;
+    }
   }
 };
 const monsterStart = () => {

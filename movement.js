@@ -6,7 +6,6 @@ const character = mapGen.character;
 const monster = mapGen.monster;
 const emptyObject = mapGen.emptyObject;
 const life = scoreMenu.lifeIndicator;
-const increaseScore = scoreMenu.increaseScore;
 const printMap = mapGen.printMap;
 const addCharacter = mapGen.addCharacter;
 const removeCharacter = mapGen.removeCharacter;
@@ -23,7 +22,7 @@ const previousItemLogic = {
   three: [orb],
   four: [orb]
 };
-// This controls the move)ment of the character
+// This controls the movement of the character
 const move = (key, mapVisible, mapLogic) => {
   if (key === 'w' && con.x > 0 && mapLogic[con.x - 1][con.y].passeable) { // We check what is around us
     mapVisible[con.x][con.y] = emptyObject.sprite;
@@ -60,7 +59,7 @@ const monsterMovement = (chosenDir, mapVisible, mapLogic, monN) => {
   const num = mon[monN];
   const mCont = mCon[num];
   if ((chosenDir === 'right' && mapLogic[mCont.y + 1] && mapLogic[mCont.x][mCont.y + 1].character) ||
-  (chosenDir === 'left' && mapLogic[mCont.y - 1] > 0 && mapLogic[mCont.x][mCont.y - 1].character) ||
+  (chosenDir === 'left' && mapLogic[mCont.y - 1] && mapLogic[mCont.x][mCont.y - 1].character) ||
   (chosenDir === 'down' && mapLogic[mCont.x + 1] && mapLogic[mCont.x + 1][mCont.y].character) ||
   (chosenDir === 'up' && mapLogic[mCont.x - 1] && mapLogic[mCont.x - 1][mCont.y].character)) {
     life.pop();
@@ -116,38 +115,8 @@ const monsterMovement = (chosenDir, mapVisible, mapLogic, monN) => {
     mCont.y++;
   }
 };
-// const monsterFollow = (mapVisible, mapLogic) => { // Todo: Solve following with while
-//   if ((mapLogic[mCon.y + 1] && mapLogic[mCon.x][mCon.y + 1].character) ||
-//   (mapLogic[mCon.y + 2] && mapLogic[mCon.x][mCon.y + 2].character) ||
-//   (mapLogic[mCon.y + 3] && mapLogic[mCon.x][mCon.y + 3].character)) { // When the wall is to the right
-//     monsterDirection = 'right';
-//     monsterMovement(monsterDirection, mapVisible, mapLogic);
-//   }
-//   if ((mapLogic[mCon.x][mCon.y - 1] && mapLogic[mCon.x][mCon.y - 1].character) ||
-//   (mapLogic[mCon.y - 2] && mapLogic[mCon.x][mCon.y - 2].character) ||
-//   (mapLogic[mCon.x][mCon.y - 3] && mapLogic[mCon.x][mCon.y - 3].character)) { // When the wall is to the left
-//     monsterDirection = 'left';
-//     monsterMovement(monsterDirection, mapVisible, mapLogic);
-//   }
-//   if ((mapLogic[mCon.x + 1] && mapLogic[mCon.x + 1][mCon.y].character) ||
-//   (mapLogic[mCon.x + 2] && mapLogic[mCon.x + 2][mCon.y].character) ||
-//   (mapLogic[mCon.x + 3] && mapLogic[mCon.x + 3][mCon.y].character) ||
-//   (mapLogic[mCon.x + 4] && mapLogic[mCon.x + 4][mCon.y].character)) { // When the wall is in on the bottom
-//     monsterDirection = 'down';
-//     monsterMovement(monsterDirection, mapVisible, mapLogic);
-//   }
-//   if ((mapLogic[mCon.x] && mapLogic[mCon.x][mCon.y].character) ||
-//     (mapLogic[mCon.x - 1] && mapLogic[mCon.x - 1][mCon.y].character) ||
-//   (mapLogic[mCon.x - 2] && mapLogic[mCon.x - 2][mCon.y].character) ||
-//   (mapLogic[mCon.x - 3] && mapLogic[mCon.x - 3][mCon.y].character) ||
-//   (mapLogic[mCon.x - 4] && mapLogic[mCon.x - 4][mCon.y].character)) { // when the wall is on top
-//     monsterDirection = 'up';
-//     monsterMovement(monsterDirection, mapVisible, mapLogic);
-//   }
-// };
 module.exports = {
   move,
   monsterMovement
-  // monsterFollow
 }
 ;
