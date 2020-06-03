@@ -18,7 +18,7 @@ Well, you move with W, A, S and D. You can quit with Q. Also, you can set your d
 - Medium, for those who don't faint after drinking a shot of tequila
 - Hard for the brave and silly.
 
-That's it for nom!
+That's it for now!
 
 # Screenshots
 
