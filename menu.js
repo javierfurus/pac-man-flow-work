@@ -21,9 +21,9 @@ const mainMenu = () => {
   ['   / /   ' + chalk.yellowBright('/ __ \\') + '/ __ `/_____/ /|_/ / __ `/ __ \\'],
   ['  / /___' + chalk.yellowBright('/ /_/ /') + ' /_/ /_____/ /  / / /_/ / / / /'],
   [' /_____/' + chalk.yellowBright('\\____/') + '\\__, /     /_/  /_/\\__,_/_/ /_/ '],
-  ['             /____/ Pac-Man clone in your terminal!'],
+  ['             /____/ Pac-Man clone in your terminal! '],
   ['                        Pac-Man is owned by ' + colors.red('namco® ')],
-  ['                                                              ']];
+  ['                                               ']];
 
   console.log(colors.white.bgBlack(asTable.configure({ delimiter: '' })(logo)));
   console.log(center(`             Current difficulty:${difficulty[setDifficulty]}`));
