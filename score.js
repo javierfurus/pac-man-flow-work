@@ -1,7 +1,9 @@
 const table = require('table');
 const colors = require('colors');
+
 let score = 0;
 let orbCount = 0;
+let winnerFlag = false;
 const lifeIco = colors.bgBrightYellow.brightYellow('  ');
 const lifeIndicator = [lifeIco, lifeIco, lifeIco];
 const generateScoreMenu = (width, height) => {
@@ -17,17 +19,17 @@ const generateScoreMenu = (width, height) => {
     }
   }
 };
-const increaseScore = () => {
-
-};
 const putScore = (target) => {
   if (orbCount > target) {
     score++;
   }
   orbCount = target;
   if (orbCount === 0) {
-    process.exit();
+    winnerFlag = true;
   }
+};
+const isWinner = () => {
+  if (winnerFlag) return true;
 };
 const addItem = () => {
   scoreMenu[0][0] = `Score: ${score}`;
@@ -65,11 +67,10 @@ const pushScoreMenu = () => {
   addItem();
   console.log(table.table(scoreMenu, config));
 };
-
 module.exports = {
   pushScoreMenu,
   lifeIndicator,
-  increaseScore,
+  isWinner,
   putScore
 }
 ;
