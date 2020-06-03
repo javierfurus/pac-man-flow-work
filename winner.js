@@ -1,8 +1,10 @@
 const asTable = require('as-table');
 const colors = require('colors');
 const term = require('terminal-kit').terminal;
+const Sound = require('node-aplay');
 const winScreen = () => {
   term.clear();
+  new Sound('./music/pacman_beginning.wav').play();
   const winner =
         [[' _     _  ___   __    _  __    _  _______  ______    __  '],
           ['| | _ | ||   | |  |  | ||  |  | ||       ||    _ |  |  | '],
