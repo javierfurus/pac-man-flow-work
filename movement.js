@@ -6,9 +6,9 @@ const character = mapGen.character;
 const monster = mapGen.monster;
 const emptyObject = mapGen.emptyObject;
 const life = scoreMenu.lifeIndicator;
-const printMap = mapGen.printMap;
 const addCharacter = mapGen.addCharacter;
 const removeCharacter = mapGen.removeCharacter;
+let gameover = false;
 const orb = mapGen.orb;
 const previousItem = {
   one: [orb.sprite],
@@ -21,6 +21,11 @@ const previousItemLogic = {
   two: [orb],
   three: [orb],
   four: [orb]
+};
+
+// Check if we should even be moving
+const isGameOver = () => {
+  if (gameover) return true;
 };
 // This controls the movement of the character
 const move = (key, mapVisible, mapLogic) => {
@@ -63,12 +68,12 @@ const monsterMovement = (chosenDir, mapVisible, mapLogic, monN) => {
   (chosenDir === 'down' && mapLogic[mCont.x + 1] && mapLogic[mCont.x + 1][mCont.y].character) ||
   (chosenDir === 'up' && mapLogic[mCont.x - 1] && mapLogic[mCont.x - 1][mCont.y].character)) {
     life.pop();
+    if (life.length === 0) {
+      console.clear();
+      gameover = true;
+    }
     removeCharacter(mapVisible, mapLogic);
     addCharacter(mapVisible, mapLogic);
-    if (life.length === 0) {
-      printMap(mapVisible);
-      process.exit();
-    }
   }
   if (chosenDir === 'up' && mapLogic[mCont.x - 1] && (mapLogic[mCont.x - 1][mCont.y].passeable)) { // We check what is around us
     previousItem[num].push(mapVisible[mCont.x - 1][mCont.y]);
@@ -117,6 +122,7 @@ const monsterMovement = (chosenDir, mapVisible, mapLogic, monN) => {
 };
 module.exports = {
   move,
-  monsterMovement
+  monsterMovement,
+  isGameOver
 }
 ;

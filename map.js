@@ -66,7 +66,6 @@ const removeCharacter = (mapVisible, mapLogic) => {
   mapVisible[x][y] = emptyObject.sprite;
   mapLogic[x][y] = emptyObject;
 };
-
 const addMonster = (mapVisible, mapLogic, n) => {
   let middleHeight;
   let middleWidth;
