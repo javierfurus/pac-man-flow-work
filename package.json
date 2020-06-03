@@ -26,6 +26,7 @@
     "as-table": "^1.0.55",
     "center-align": "^1.0.1",
     "cli-table3": "^0.6.0",
-    "colors": "^1.4.0"
+    "colors": "^1.4.0",
+    "terminal-kit": "^1.35.2"
   }
 }
