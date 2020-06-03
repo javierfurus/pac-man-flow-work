@@ -1,9 +1,9 @@
-const mapGen = require('./map');
-const moveFunc = require('./movement');
-const scoreMenu = require('./score');
+const mapGen = require('./functions/map');
+const moveFunc = require('./functions/movement');
+const scoreMenu = require('./functions/score');
 const menu = require('./menu');
-const gameOverScreen = require('./gameover').gameOverScreen;
-const winnerScreen = require('./winner').winScreen;
+const gameOverScreen = require('./functions/gameover').gameOverScreen;
+const winnerScreen = require('./functions/winner').winScreen;
 const term = require('terminal-kit').terminal;
 // map functions
 const generateMap = mapGen.generateMap;
