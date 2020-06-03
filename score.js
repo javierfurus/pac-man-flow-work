@@ -1,9 +1,10 @@
 const table = require('table');
 const colors = require('colors');
-
+const Sound = require('node-aplay');
 let score = 0;
 let orbCount = 0;
 let winnerFlag = false;
+let count = 0;
 const lifeIco = colors.bgBrightYellow.brightYellow('  ');
 const lifeIndicator = [lifeIco, lifeIco, lifeIco];
 const generateScoreMenu = (width, height) => {
@@ -22,6 +23,11 @@ const generateScoreMenu = (width, height) => {
 const putScore = (target) => {
   if (orbCount > target) {
     score++;
+    count++;
+    if (count === 4) {
+      new Sound('./music/pacman_chomp.wav').play();
+      count = 0;
+    }
   }
   orbCount = target;
   if (orbCount === 0) {

@@ -1,26 +1,31 @@
 const asTable = require('as-table');
 const colors = require('colors');
+const chalk = require('chalk');
 const center = require('center-align');
 const term = require('terminal-kit').terminal;
 const game = require('./index');
+const Sound = require('node-aplay');
 let monsterSpeed = 190;
 const difficulty = ['Easy', 'Medium', 'Hard'];
 let setDifficulty = 1;
 const mainMenu = () => {
   term.clear();
+  new Sound('./music/pacman_beginning.wav').play();
   const menuItems = ['                     Start                     ',
     '                     Config                     ',
     '                     About                     ',
     '                     Quit                         '];
   const logo =
 [['     __                      __  ___          '],
-  ['    / /   ____  ____ _      /  |/  /___ _____ '],
-  ['   / /   / __ \\/ __ `/_____/ /|_/ / __ `/ __ \\'],
-  ['  / /___/ /_/ / /_/ /_____/ /  / / /_/ / / / /'],
-  [' /_____/\\____/\\__, /     /_/  /_/\\__,_/_/ /_/ '],
-  ['             /____/ Pac-Man clone in your terminal!']];
+  ['    / /   ' + chalk.yellowBright('____') + '  ____ _      /  |/  /___ _____ '],
+  ['   / /   ' + chalk.yellowBright('/ __ \\') + '/ __ `/_____/ /|_/ / __ `/ __ \\'],
+  ['  / /___' + chalk.yellowBright('/ /_/ /') + ' /_/ /_____/ /  / / /_/ / / / /'],
+  [' /_____/' + chalk.yellowBright('\\____/') + '\\__, /     /_/  /_/\\__,_/_/ /_/ '],
+  ['             /____/ Pac-Man clone in your terminal!'],
+  ['                        Pac-Man is owned by ' + colors.red('namco® ')],
+  ['                                                              ']];
 
-  console.log(colors.bgYellow.black(asTable.configure({ delimiter: '' })(logo)));
+  console.log(colors.white.bgBlack(asTable.configure({ delimiter: '' })(logo)));
   console.log(center(`             Current difficulty:${difficulty[setDifficulty]}`));
   const options = {
     selectedStyle: term.black.bgBrightYellow
@@ -69,7 +74,7 @@ const mainMenu = () => {
       });
     }
     if (arg.selectedIndex === 2) {
-      const about = 'What is this game? A very simple Pac-Man clone that you can play in your terminal!\nGive it a shot, it is a real challenge!\nJavier Furus 2020';
+      const about = 'What is this game? A very simple Pac-Man clone that you can play in your terminal!\nGive it a shot, it is a real challenge!\nAll sounds and the Pac-Man name are namco Ltd\'s property.\nJavier Furus 2020, namco® ';
       console.log(center(about));
       const aboutMenuItems = ['     Back     '];
       const options = {
