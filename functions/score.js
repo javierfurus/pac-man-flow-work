@@ -23,10 +23,16 @@ const generateScoreMenu = (width, height) => {
 const putScore = (target) => {
   if (orbCount > target) {
     score++;
-    count++;
-    if (count === 4) {
-      new Sound('./music/pacman_chomp.wav').play();
+    if (count === 2) {
+      new Sound('./music/pacman_chomp2.wav').play();
       count = 0;
+    }
+    if (count === 1) {
+      new Sound('./music/pacman_chomp.wav').play();
+      count++;
+    }
+    if (count === 0) {
+      count++;
     }
   }
   orbCount = target;

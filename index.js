@@ -2,6 +2,7 @@ const mapGen = require('./functions/map');
 const moveFunc = require('./functions/movement');
 const scoreMenu = require('./functions/score');
 const menu = require('./menu');
+const Sound = require('node-aplay');
 const gameOverScreen = require('./functions/gameover').gameOverScreen;
 const winnerScreen = require('./functions/winner').winScreen;
 const term = require('terminal-kit').terminal;
@@ -26,6 +27,8 @@ const map = generateMap(31, 30);
 const mapBackground = generateMap(31, 30);
 let direction = null;
 const gameStart = (monsterSpeed) => {
+  new Sound('./music/siren_1.wav').play();
+  const playMusic = setInterval(() => { new Sound('./music/siren_1.wav').play(); }, 1600);
   fillMap(map, mapBackground);
   addCharacter(map, mapBackground);
   addMonster(map, mapBackground, 3);
@@ -129,6 +132,7 @@ const gameStart = (monsterSpeed) => {
   };
   const gameOver = () => {
     if (isGameOver()) {
+      clearInterval(playMusic);
       clearInterval(screen);
       clearInterval(heroStarter);
       clearInterval(monsterStarter);
@@ -140,6 +144,7 @@ const gameStart = (monsterSpeed) => {
   };
   const winner = () => {
     if (isWinner()) {
+      clearInterval(playMusic);
       clearInterval(screen);
       clearInterval(heroStarter);
       clearInterval(monsterStarter);
