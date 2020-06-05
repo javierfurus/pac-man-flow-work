@@ -4,7 +4,12 @@
 
 A clone of Pac-Man in your terminal! It is called Log-Man, well... because he is brought to life by console.log( ), of course! 
 
-Just play with:
+Before startung run:
+
+```bash
+npm install
+```
+Then start playing with:
 
 ```bash
 npm start
