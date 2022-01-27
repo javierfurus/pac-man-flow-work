@@ -3,7 +3,11 @@ const moveFunc = require('./functions/movement');
 const scoreMenu = require('./functions/score');
 const menu = require('./menu');
 const Sound = require('node-aplay');
-const player = require('play-sound')((opts = {}));
+const player = require('play-sound')(
+  (opts = {
+    player: process.platform === 'win32' ? 'powershell' : 'aplay',
+  })
+);
 const gameOverScreen = require('./functions/gameover').gameOverScreen;
 const winnerScreen = require('./functions/winner').winScreen;
 const term = require('terminal-kit').terminal;
