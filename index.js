@@ -3,6 +3,7 @@ const moveFunc = require('./functions/movement');
 const scoreMenu = require('./functions/score');
 const menu = require('./menu');
 const Sound = require('node-aplay');
+const player = require('play-sound')((opts = {}));
 const gameOverScreen = require('./functions/gameover').gameOverScreen;
 const winnerScreen = require('./functions/winner').winScreen;
 const term = require('terminal-kit').terminal;
@@ -26,9 +27,20 @@ const speed = 200;
 const map = generateMap(31, 30);
 const mapBackground = generateMap(31, 30);
 let direction = null;
+let mute = false;
+stopMusic = false;
+let musicPlayer;
 const gameStart = (monsterSpeed) => {
-  new Sound('./music/siren_1.wav').play();
-  const playMusic = setInterval(() => { new Sound('./music/siren_1.wav').play(); }, 1600);
+  const playMusic = () => {
+    musicPlayer = player.play('./music/siren_1.wav').on('exit', () => {
+      if (!mute && !stopMusic) {
+        playMusic();
+      }
+    });
+  };
+  if (!mute) {
+    playMusic();
+  }
   fillMap(map, mapBackground);
   addCharacter(map, mapBackground);
   addMonster(map, mapBackground, 3);
@@ -45,37 +57,56 @@ const gameStart = (monsterSpeed) => {
     dirPicker1 = Math.floor(Math.random() * 4);
     dirPicker2 = Math.floor(Math.random() * 4);
     dirPicker3 = Math.floor(Math.random() * 4);
-  }, 2000)
-      ;
+  }, 2000);
   const detour = (chosenDir, n) => {
     const options = ['one', 'two', 'three', 'four'];
     // Where should a monster go...
-    if (chosenDir === 'right' && (mapBackground[monCon[options[n]].y + 1] === undefined ||
-  mapBackground[monCon[options[n]].x][monCon[options[n]].y + 1].passeable === false)) { // When the wall is to the right
+    if (
+      chosenDir === 'right' &&
+      (mapBackground[monCon[options[n]].y + 1] === undefined ||
+        mapBackground[monCon[options[n]].x][monCon[options[n]].y + 1]
+          .passeable === false)
+    ) {
+      // When the wall is to the right
       const dir = 1;
       if (n === 0) dirPicker0 = dir;
       if (n === 1) dirPicker1 = dir;
       if (n === 2) dirPicker2 = dir;
       if (n === 3) dirPicker3 = dir;
     }
-    if (chosenDir === 'left' && (mapBackground[monCon[options[n]].y - 1] === undefined ||
-  mapBackground[monCon[options[n]].x][monCon[options[n]].y - 1].passeable === false)) { // When the wall is to the left
+    if (
+      chosenDir === 'left' &&
+      (mapBackground[monCon[options[n]].y - 1] === undefined ||
+        mapBackground[monCon[options[n]].x][monCon[options[n]].y - 1]
+          .passeable === false)
+    ) {
+      // When the wall is to the left
       const dir = 0;
       if (n === 0) dirPicker0 = dir;
       if (n === 1) dirPicker1 = dir;
       if (n === 2) dirPicker2 = dir;
       if (n === 3) dirPicker3 = dir;
     }
-    if (chosenDir === 'down' && (mapBackground[monCon[options[n]].x + 1] === undefined ||
-  mapBackground[monCon[options[n]].x + 1][monCon[options[n]].y].passeable === false)) { // When the wall is in on the bottom
+    if (
+      chosenDir === 'down' &&
+      (mapBackground[monCon[options[n]].x + 1] === undefined ||
+        mapBackground[monCon[options[n]].x + 1][monCon[options[n]].y]
+          .passeable === false)
+    ) {
+      // When the wall is in on the bottom
       const dir = 2;
       if (n === 0) dirPicker0 = dir;
       if (n === 1) dirPicker1 = dir;
       if (n === 2) dirPicker2 = dir;
       if (n === 3) dirPicker3 = dir;
     }
-    if (chosenDir === 'up' && (mapBackground[monCon[options[n]].x - 1] === undefined ||
-  mapBackground[monCon[options[n]].x - 1][monCon[options[n]].y].passeable === false)) { // when the wall is on top
+    if (
+      chosenDir === 'up' &&
+      (mapBackground[monCon[options[n]].x - 1] === undefined ||
+        mapBackground[monCon[options[n]].x - 1][monCon[options[n]].y]
+          .passeable === false)
+    ) {
+      // when the wall is on top
       const dir = 3;
       if (n === 0) dirPicker0 = dir;
       if (n === 1) dirPicker1 = dir;
@@ -84,28 +115,44 @@ const gameStart = (monsterSpeed) => {
     }
     // Follow
     for (let i = 0; i < 25; i++) {
-      if ((mapBackground[monCon[options[n]].y + i] && mapBackground[monCon[options[n]].x][monCon[options[n]].y + i].character)) { // When the wall is to the right
+      if (
+        mapBackground[monCon[options[n]].y + i] &&
+        mapBackground[monCon[options[n]].x][monCon[options[n]].y + i].character
+      ) {
+        // When the wall is to the right
         const dir = 3;
         if (n === 0) dirPicker0 = dir;
         if (n === 1) dirPicker1 = dir;
         if (n === 2) dirPicker2 = dir;
         if (n === 3) dirPicker3 = dir;
       }
-      if ((mapBackground[monCon[options[n]].y - i] && mapBackground[monCon[options[n]].x][monCon[options[n]].y - i].character)) { // When the wall is to the left
+      if (
+        mapBackground[monCon[options[n]].y - i] &&
+        mapBackground[monCon[options[n]].x][monCon[options[n]].y - i].character
+      ) {
+        // When the wall is to the left
         const dir = 2;
         if (n === 0) dirPicker0 = dir;
         if (n === 1) dirPicker1 = dir;
         if (n === 2) dirPicker2 = dir;
         if (n === 3) dirPicker3 = dir;
       }
-      if ((mapBackground[monCon[options[n]].x + i] && mapBackground[monCon[options[n]].x + i][monCon[options[n]].y].character)) { // When the wall is in on the bottom
+      if (
+        mapBackground[monCon[options[n]].x + i] &&
+        mapBackground[monCon[options[n]].x + i][monCon[options[n]].y].character
+      ) {
+        // When the wall is in on the bottom
         const dir = 1;
         if (n === 0) dirPicker0 = dir;
         if (n === 1) dirPicker1 = dir;
         if (n === 2) dirPicker2 = dir;
         if (n === 3) dirPicker3 = dir;
       }
-      if ((mapBackground[monCon[options[n]].x - i] && mapBackground[monCon[options[n]].x - i][monCon[options[n]].y].character)) { // when the wall is on top
+      if (
+        mapBackground[monCon[options[n]].x - i] &&
+        mapBackground[monCon[options[n]].x - i][monCon[options[n]].y].character
+      ) {
+        // when the wall is on top
         const dir = 0;
         if (n === 0) dirPicker0 = dir;
         if (n === 1) dirPicker1 = dir;
@@ -132,7 +179,7 @@ const gameStart = (monsterSpeed) => {
   };
   const gameOver = () => {
     if (isGameOver()) {
-      clearInterval(playMusic);
+      stopMusic = true;
       clearInterval(screen);
       clearInterval(heroStarter);
       clearInterval(monsterStarter);
@@ -144,7 +191,7 @@ const gameStart = (monsterSpeed) => {
   };
   const winner = () => {
     if (isWinner()) {
-      clearInterval(playMusic);
+      stopMusic = true;
       clearInterval(screen);
       clearInterval(heroStarter);
       clearInterval(monsterStarter);
@@ -154,14 +201,38 @@ const gameStart = (monsterSpeed) => {
       winnerScreen();
     }
   };
-  const screen = setInterval(() => { putScore(orbCount(map)); printMap(map); gameOver(); winner(); }, 73);
+  const returnToMainMenu = () => {
+    stopMusic = true;
+    clearInterval(screen);
+    clearInterval(heroStarter);
+    clearInterval(monsterStarter);
+    clearInterval(changeDir);
+    term.clear();
+    term.grabInput(false);
+    menu.mainMenu();
+  };
+  const screen = setInterval(() => {
+    putScore(orbCount(map));
+    printMap(map);
+    gameOver();
+    winner();
+  }, 73);
   const heroStarter = setInterval(start, speed); // the character's interval
   const monsterStarter = setInterval(monsterStart, monsterSpeed); // the monsters' interval
   term.grabInput();
-  term.on('key', key => {
+  term.on('key', (key) => {
     if (key === 'q') {
       term.clear();
       process.exit();
+    }
+    if (key === 'm') {
+      scoreMenu.muteSounds();
+      if (!mute) {
+        musicPlayer.kill();
+      } else {
+        playMusic();
+      }
+      mute = !mute;
     }
     if (key === 'w') {
       direction = key;
@@ -176,3 +247,4 @@ const gameStart = (monsterSpeed) => {
 };
 menu.mainMenu();
 exports.gameStart = gameStart;
+exports.player = player;

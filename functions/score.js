@@ -1,11 +1,12 @@
 const table = require('table');
 const colors = require('colors');
-const Sound = require('node-aplay');
+const player = require('play-sound')((opts = {}));
 let score = 0;
 let orbCount = 0;
 let winnerFlag = false;
 let count = 0;
-const lifeIco = colors.bgBrightYellow.brightYellow('  ');
+let mute = false;
+let lifeIco = colors.bgBrightYellow.brightYellow('  ');
 const lifeIndicator = [lifeIco, lifeIco, lifeIco];
 const generateScoreMenu = (width, height) => {
   const scoreMenuToBe = new Array(height);
@@ -13,7 +14,8 @@ const generateScoreMenu = (width, height) => {
     scoreMenuToBe[i] = new Array(width);
   }
   return scoreMenuToBe;
-}; const fillScoreMenu = (scoreMenu) => {
+};
+const fillScoreMenu = (scoreMenu) => {
   for (let i = 0; i < scoreMenu.length; i++) {
     for (let j = 0; j < scoreMenu[i].length; j++) {
       scoreMenu[i][j] = ' ';
@@ -23,16 +25,18 @@ const generateScoreMenu = (width, height) => {
 const putScore = (target) => {
   if (orbCount > target) {
     score++;
-    if (count === 2) {
-      new Sound('./music/pacman_chomp2.wav').play();
-      count = 0;
-    }
-    if (count === 1) {
-      new Sound('./music/pacman_chomp.wav').play();
-      count++;
-    }
-    if (count === 0) {
-      count++;
+    if (!mute) {
+      if (count === 2) {
+        player.play('./music/pacman_chomp2.wav');
+        count = 0;
+      }
+      if (count === 1) {
+        player.play('./music/pacman_chomp.wav');
+        count++;
+      }
+      if (count === 0) {
+        count++;
+      }
     }
   }
   orbCount = target;
@@ -47,7 +51,7 @@ const addItem = () => {
   scoreMenu[0][0] = `Score: ${score}`;
   scoreMenu[0][3] = `Life: ${lifeIndicator.join(' ')}`;
   scoreMenu[1][0] = 'Instructions:';
-  scoreMenu[1][1] = 'Move: W, A, S, D. Quit: Q';
+  scoreMenu[1][1] = 'Move: W, A, S, D. Quit: Q. Mute: M';
 };
 const scoreMenu = generateScoreMenu(4, 2);
 fillScoreMenu(scoreMenu);
@@ -72,8 +76,19 @@ const config = {
     joinBody: '─',
     joinLeft: '├',
     joinRight: '┤',
-    joinJoin: '─'
-  }
+    joinJoin: '─',
+  },
+};
+const resetScore = () => {
+  lifeIco = [lifeIco, lifeIco, lifeIco];
+  score = 0;
+  orbCount = 0;
+  winnerFlag = false;
+  count = 0;
+  mute = false;
+};
+const muteSounds = () => {
+  mute = !mute;
 };
 const pushScoreMenu = () => {
   addItem();
@@ -83,6 +98,7 @@ module.exports = {
   pushScoreMenu,
   lifeIndicator,
   isWinner,
-  putScore
-}
-;
+  putScore,
+  muteSounds,
+  resetScore,
+};
